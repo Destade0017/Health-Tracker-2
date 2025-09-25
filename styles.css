@@ -1,0 +1,240 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .date {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .metric-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metric-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .quick-add {
+            background: #4facfe;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .quick-add:hover {
+            background: #2196F3;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .metric-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8f0;
+            border-radius: 10px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .metric-input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .goal-text {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e1e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .steps .progress-fill { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+        .calories .progress-fill { background: linear-gradient(90deg, #fa709a, #fee140); }
+        .water .progress-fill { background: linear-gradient(90deg, #a8edea, #fed6e3); }
+        .sleep .progress-fill { background: linear-gradient(90deg, #667eea, #764ba2); }
+
+        .stats-section {
+            background: #f8f9ff;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .stats-title {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .weekly-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .summary-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-steps { background: #4facfe; }
+        .btn-calories { background: #fa709a; }
+        .btn-water { background: #a8edea; color: #333; }
+        .btn-reset { background: #666; }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+  
