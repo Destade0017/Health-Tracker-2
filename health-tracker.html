@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .date {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+
+        .metric-card {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .metric-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .metric-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .quick-add {
+            background: #4facfe;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .quick-add:hover {
+            background: #2196F3;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .metric-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8f0;
+            border-radius: 10px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .metric-input:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .goal-text {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e1e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 6px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .steps .progress-fill { background: linear-gradient(90deg, #4facfe, #00f2fe); }
+        .calories .progress-fill { background: linear-gradient(90deg, #fa709a, #fee140); }
+        .water .progress-fill { background: linear-gradient(90deg, #a8edea, #fed6e3); }
+        .sleep .progress-fill { background: linear-gradient(90deg, #667eea, #764ba2); }
+
+        .stats-section {
+            background: #f8f9ff;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .stats-title {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .weekly-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .summary-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-steps { background: #4facfe; }
+        .btn-calories { background: #fa709a; }
+        .btn-water { background: #a8edea; color: #333; }
+        .btn-reset { background: #666; }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💪 Health Tracker</h1>
+            <div class="date" id="currentDate"></div>
+        </div>
+
+        <div class="metrics-grid">
+            <!-- Steps Card -->
+            <div class="metric-card steps">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <svg class="metric-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
+                        </svg>
+                        Steps
+                    </div>
+                    <button class="quick-add" onclick="quickAdd('steps', 1000)">+</button>
+                </div>
+                <div class="input-group">
+                    <input type="number" class="metric-input" id="stepsInput" placeholder="0" oninput="updateProgress('steps')">
+                    <div class="goal-text">Goal: 10,000 steps</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="stepsProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="stepsText">0% complete</div>
+            </div>
+
+            <!-- Calories Card -->
+            <div class="metric-card calories">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <svg class="metric-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M15.5 11.5c0 2-1.5 3.5-3.5 3.5s-3.5-1.5-3.5-3.5S10 8 12 8s3.5 1.5 3.5 3.5zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-1.12.23-2.18.65-3.15L12 4l7.35 4.85c.42.97.65 2.03.65 3.15 0 4.41-3.59 8-8 8z"/>
+                        </svg>
+                        Calories
+                    </div>
+                    <button class="quick-add" onclick="quickAdd('calories', 200)">+</button>
+                </div>
+                <div class="input-group">
+                    <input type="number" class="metric-input" id="caloriesInput" placeholder="0" oninput="updateProgress('calories')">
+                    <div class="goal-text">Goal: 2,000 calories</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="caloriesProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="caloriesText">0% complete</div>
+            </div>
+
+            <!-- Water Card -->
+            <div class="metric-card water">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <svg class="metric-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9l-5.09 3.26L18 21h-12l1.09-8.74L2 9l6.91-.74L12 2zm0 4.24L10.18 9.7 6.82 10.13l2.72 1.74-.64 3.13L12 13.46l3.1 1.54-.64-3.13 2.72-1.74L13.82 9.7 12 6.24z"/>
+                        </svg>
+                        Water
+                    </div>
+                    <button class="quick-add" onclick="quickAdd('water', 1)">+</button>
+                </div>
+                <div class="input-group">
+                    <input type="number" step="0.1" class="metric-input" id="waterInput" placeholder="0" oninput="updateProgress('water')">
+                    <div class="goal-text">Goal: 8 glasses</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="waterProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="waterText">0% complete</div>
+            </div>
+
+            <!-- Sleep Card -->
+            <div class="metric-card sleep">
+                <div class="metric-header">
+                    <div class="metric-title">
+                        <svg class="metric-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.5 2.5c.84 0 1.5.66 1.5 1.5 0 .84-.66 1.5-1.5 1.5S11 4.84 11 4c0-.84.66-1.5 1.5-1.5zm-4 4c.84 0 1.5.66 1.5 1.5S9.34 9.5 8.5 9.5 7 8.84 7 8s.66-1.5 1.5-1.5zm7 0c.84 0 1.5.66 1.5 1.5s-.66 1.5-1.5 1.5S14 8.84 14 8s.66-1.5 1.5-1.5zm-10.5 4c.84 0 1.5.66 1.5 1.5s-.66 1.5-1.5 1.5S3.5 12.84 3.5 12s.66-1.5 1.5-1.5zm14 0c.84 0 1.5.66 1.5 1.5s-.66 1.5-1.5 1.5-1.5-.66-1.5-1.5.66-1.5 1.5-1.5zm-12 4c.84 0 1.5.66 1.5 1.5S7.34 17.5 6.5 17.5 5 16.84 5 16s.66-1.5 1.5-1.5zm10 0c.84 0 1.5.66 1.5 1.5s-.66 1.5-1.5 1.5-1.5-.66-1.5-1.5.66-1.5 1.5-1.5zm-5 2c.84 0 1.5.66 1.5 1.5s-.66 1.5-1.5 1.5-1.5-.66-1.5-1.5.66-1.5 1.5-1.5z"/>
+                        </svg>
+                        Sleep
+                    </div>
+                    <button class="quick-add" onclick="quickAdd('sleep', 1)">+</button>
+                </div>
+                <div class="input-group">
+                    <input type="number" step="0.1" class="metric-input" id="sleepInput" placeholder="0" oninput="updateProgress('sleep')">
+                    <div class="goal-text">Goal: 8 hours</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="sleepProgress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="sleepText">0% complete</div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h3 class="stats-title">📊 Weekly Summary</h3>
+            <div class="weekly-summary">
+                <div class="summary-card">
+                    <div class="summary-value" id="avgSteps">8,500</div>
+                    <div class="summary-label">Avg Steps</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="avgCalories">1,850</div>
+                    <div class="summary-label">Avg Calories</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="avgWater">6.8</div>
+                    <div class="summary-label">Avg Water</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="avgSleep">7.2</div>
+                    <div class="summary-label">Avg Sleep</div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="action-btn btn-steps" onclick="quickAdd('steps', 500)">+500 Steps</button>
+                <button class="action-btn btn-calories" onclick="quickAdd('calories', 100)">+100 Cal</button>
+                <button class="action-btn btn-water" onclick="quickAdd('water', 0.5)">+0.5 Water</button>
+                <button class="action-btn btn-reset" onclick="resetAll()">Reset Day</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Goals
+        const goals = {
+            steps: 10000,
+            calories: 2000,
+            water: 8,
+            sleep: 8
+        };
+
+        // Set current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Quick add function
+        function quickAdd(metric, amount) {
+            const input = document.getElementById(metric + 'Input');
+            const currentValue = parseFloat(input.value) || 0;
+            input.value = currentValue + amount;
+            updateProgress(metric);
+        }
+
+        // Update progress bars
+        function updateProgress(metric) {
+            const input = document.getElementById(metric + 'Input');
+            const progressBar = document.getElementById(metric + 'Progress');
+            const progressText = document.getElementById(metric + 'Text');
+            
+            const current = parseFloat(input.value) || 0;
+            const goal = goals[metric];
+            const percentage = Math.min((current / goal) * 100, 100);
+            
+            progressBar.style.width = percentage + '%';
+            progressText.textContent = Math.round(percentage) + '% complete';
+        }
+
+        // Reset all values
+        function resetAll() {
+            const inputs = ['stepsInput', 'caloriesInput', 'waterInput', 'sleepInput'];
+            inputs.forEach(inputId => {
+                document.getElementById(inputId).value = '';
+                const metric = inputId.replace('Input', '');
+                updateProgress(metric);
+            });
+        }
+
+        // Initialize progress bars
+        ['steps', 'calories', 'water', 'sleep'].forEach(metric => {
+            updateProgress(metric);
+        });
+
+        // Add some sample data to weekly summary on page load
+        function updateWeeklySummary() {
+            // Simulate some random weekly data
+            const weeklyData = {
+                steps: Math.floor(Math.random() * 3000) + 7000,
+                calories: Math.floor(Math.random() * 400) + 1600,
+                water: Math.floor(Math.random() * 30) / 10 + 6,
+                sleep: Math.floor(Math.random() * 20) / 10 + 6.5
+            };
+
+            document.getElementById('avgSteps').textContent = weeklyData.steps.toLocaleString();
+            document.getElementById('avgCalories').textContent = weeklyData.calories.toLocaleString();
+            document.getElementById('avgWater').textContent = weeklyData.water.toFixed(1);
+            document.getElementById('avgSleep').textContent = weeklyData.sleep.toFixed(1) + 'h';
+        }
+
+        // Update weekly summary on page load
+        updateWeeklySummary();
+    </script>
+</body>
+</html>
